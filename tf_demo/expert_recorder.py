@@ -2,26 +2,20 @@
 The expert recorder.
 """
 import argparse
-import keyboard
+import getch
 import random
 import gym
-import gym_minecraft
 import numpy as np
 import time
 import os
 
-from config import (
-    GYM_RESOLUTION,
-    MALMO_IP,
-    BINDINGS,
-    SHARD_SIZE,
-    RECORD_INTERVAL)
-
-
-
+BINDINGS = {
+    'a': 0,
+    'd': 2}
+SHARD_SIZE = 2000
 
 def get_options():
-    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser = argparse.ArgumentParser(description='Records an expert..')
     parser.add_argument('data_directory', type=str,
         help="The main datastore for this particular expert.")
 
@@ -38,109 +32,59 @@ def run_recorder(opts):
 
     record_history = [] # The state action history buffer.
 
-    env = gym.make('MinecraftDefaultWorld1-v0')
-    env.init(
-        start_minecraft=None,
-        client_pool=[('127.0.0.1', 10000)],
-        continuous_discrete = True,
-        videoResolution=GYM_RESOLUTION,
-        add_noop_command=True)
+    env = gym.make('MountainCar-v0')
+    env._max_episode_steps = 1200
 
     ##############
-    # BIND KEYS  #1
+    # BIND KEYS  #
     ##############
 
-    keyboard.unhook_all()
-    keys_pressed = {}
-    action = ""
-    record = False
+    action = None
     esc = False
-
-    def keyboard_hook(event):
-        """
-        The key manager for interaction with minecraft.
-        Allow sfor simultaneous execution of movement 
-        """
-        nonlocal action, keys_pressed, record, esc
-        if event.event_type is keyboard.KEY_DOWN:
-            keys_pressed[event.name] = True
-        else:   
-            if 'r' in keys_pressed: record = not record
-            if '+' in keys_pressed: esc = True
-            if event.name in keys_pressed:
-                del keys_pressed[event.name]
-
-        
-        actions_to_process = []
-        for kmap, default in BINDINGS:
-            pressed = [x for x in kmap if x in keys_pressed]
-            if len(pressed) > 1 or len(pressed) == 0:
-                actions_to_process.append(default)
-            else:
-                actions_to_process.append(kmap[pressed[0]])
-
-
-        action = "\n".join(actions_to_process)
-
-    keyboard.hook(keyboard_hook)
 
 
     shard_suffix = ''.join(random.choice('0123456789ABCDEF') for i in range(16))
     sarsa_pairs = []
-    _old_record = record
-    done = False
-    last_action_time = time.time()
-    _last_action = ''
-    _last_obs = env.reset()
+
+    
+
+    while not esc:
+
+        done = False
+        _last_obs = env.reset()
+        while not done:
+            env.render()
+            # Handle the toggling of different application states
 
 
-    no_action = False
 
-    while not done:
-        env.render()
-        
-        # Handle the toggling of different application states
-        if _old_record is not record:
-            print("Recording: ", record)
-            _old_record = record
+            # Take the current action if a key is pressed.
+            action = None
+            while action is None:
+                keys_pressed  = getch.getch()
+                if keys_pressed is '+':
+                    esc = True
+                    break
+
+                pressed = [x for x in BINDINGS if x in keys_pressed]
+                action = BINDINGS[pressed[0]] if len(pressed) > 0 else None
+
+            if esc:
+                print("ENDING")
+                done = True
+                break
+
+            obs, reward, done, info = env.step(action)
+            
+            no_action = False
+            sarsa = (_last_obs, action)
+            _last_obs = obs
+            sarsa_pairs.append(sarsa)
+
         if esc:
-            print("ENDING")
-            done = True
             break
 
-        #  make actions if and only if 
-        # the awllotted recording interval has past
-        # or instantantelously make actions if we're not recording.
-        cur_time = time.time()
-        if cur_time - last_action_time > RECORD_INTERVAL or not record:
-            if keys_pressed :
-                obs, reward, done, info = env.step(action)
-                no_action = False
-            else:
-                obs, reward, done, info  = env.step(action)
-                no_action = True
 
-            # Record the data
-            if record:
-                # When the agent stops acting, record a no action
-                # Otherwise wait untill it acts again.
-                if ((no_action and _last_action is not action)
-                        or (no_action and not (_last_obs == obs).all())
-                        or not no_action):
-                    sarsa = (obs, action[:])
-                    sarsa_pairs.append(sarsa)
-
-                    print("recording", len(sarsa_pairs))
-
-            # Update the action time.
-            last_action_time = cur_time
-            _last_action = action
-            _last_obs = obs
-        else:
-            env.step(_last_action)
-
-
-    keyboard.unhook(keyboard_hook)
 
     print("SAVING")
     # Save out recording data.
