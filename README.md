@@ -24,7 +24,7 @@ This repo contains notes for a tutorial on reinforcement learning. The tutorial 
 		
 	d. Now we actually build the model 
 	
-	-. Fill in create_model, create_training, and run_main.
+	- Fill in create_model, create_training, and run_main.
 	- Run the model `python3 complete.py ./data/`, it should work instantly (discrease learning rate for a cooler effect.)
 	
 	- At this point you can show Tensorboard to examine your neural network structure. To do this, execute following command in the same directory as the code. 
