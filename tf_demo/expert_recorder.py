@@ -46,7 +46,10 @@ def run_recorder(opts):
     shard_suffix = ''.join(random.choice('0123456789ABCDEF') for i in range(16))
     sarsa_pairs = []
 
-    
+    print("Welcome to the expert recorder")
+    print("To record press either a or d to move the agent left or right.")
+    print("Once you're finished press + to save the data.")
+    print("NOTE: Make sure you've selected the console window in order for the application to receive your input.")
 
     while not esc:
 
@@ -95,6 +98,8 @@ def run_recorder(opts):
                 (shard_iter+1)*SHARD_SIZE, len(sarsa_pairs))]
 
         shard_name = "{}_{}.npy".format(str(shard_iter), shard_suffix)
+        if not os.path.exists(ddir):
+            os.makedirs(ddir)
         with open(os.path.join(ddir, shard_name), 'wb') as f:
             np.save(f, sarsa_pairs)
 
