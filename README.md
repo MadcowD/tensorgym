@@ -11,28 +11,42 @@ This repo contains notes for a tutorial on reinforcement learning. The tutorial 
 	c. Explain different pieces of Tensorflow, variables, ops, sessions, etc.
 
 3. Behavioral Cloning + Tensorflow Demo `tf_demo` 
+
 	a. You'll need to add some slides about how BC works
+	
+	
 	c. Now to show behavioral cloning in action run `python3 expert_recorder.py ./data/`
 		This will let you create a small dataset of when the agent should turn left or right at certain
 		points in mountain car. (See the YouTube video to see how I do this https://youtu.be/0rsrDOXsSeM?t=1370)
 		When you run `expert_recorder.py`, select the terminal window in which you ran the command, then use the `a` and `d` keys to move the agent left and right respectively. The environment will only tick if you press either of these keys. Once you've finished recording press `+` to save the data to the folder specified.
-
 		Once you've recorded the data you're going to want to then talk about building a model to learn from it.
+		
+		
 	d. Now we actually build the model 
-		-. Fill in create_model, create_training, and run_main.
-		- Run the model `python3 complete.py ./data/`, it should work instantly (discrease learning rate for a cooler effect.)
-		- At this point you can show Tensorboard to examine your neural network structure. To do this, execute following command in the same directory as the code. 
-		```
-		tensorboard --logdir ./logs
-		```
+	
+	-. Fill in create_model, create_training, and run_main.
+	- Run the model `python3 complete.py ./data/`, it should work instantly (discrease learning rate for a cooler effect.)
+	
+	- At this point you can show Tensorboard to examine your neural network structure. To do this, execute following command in the same directory as the code. 
+	```
+	tensorboard --logdir ./logs
+	```
 
 4. Reinforce Demo.
+
 	a. Explain how we can use reinforcement learning to actually improve performance of existing BC agents or train agents from scratch.
+	
 	b. In `reinforce_demo` fill out the cofde in `demo.py` using that from `run.py` and then run `python3 run.py`. The script will then evaluate the policy gradient algorithm on CartPole for a number of episodes and after 300 episodes it will plot the progress of REINFORCE. Since REINFORCE is an unstable algorithm, expect that occasionally it will learn and then unlearn the policy.
+	
 
 5. Actor Critic Demo.
+
 	a. Explain actor critic algorithms. @Russ You'll need to make some slides for these.
+	
+	
 	c. Then explain vanilla action-value actor critic methods (these are basically policy gradient but using TD learning to estimate the action value and then updating the actor.)
+	
+	
 	b. In `actor_critic_demo` you will fill out the code in `demo.py`. In particular you should fill out `create_critic_training`, `create_actor_training`, and the second half of the `learn` method. Then when you're done you can run `python3 run.py` and this should train the action-value actor-critic methods. Generally these train to about 2000 episodes, maybe 10 minutes or so. I've included some reward plots for you to use in the `actor_critic_demo` folder.
 
 
