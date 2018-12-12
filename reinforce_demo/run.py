@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 import time
 
-NUM_EPISODES = 300
-MAX_STEPS = 500
+NUM_EPISODES = 800
+MAX_STEPS = 200
 FAIL_PENALTY = -100
 # LEARNING_RATE = 0.0001 # hidden layer 10/20
 LEARNING_RATE = 0.002 # hidden layer 5
@@ -70,7 +70,7 @@ agent = complete.PolicyGradientNNAgent(lr=LEARNING_RATE,
 
 
 env = gym.make('CartPole-v0')
-env._max_episode_steps = 500
+env._max_episode_steps = 200
 if RECORD:
   env = wrappers.Monitor(env, '/tmp/cartpole-experiment-2', force=True)
 
