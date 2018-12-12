@@ -1,13 +1,21 @@
 # Tensorflow + Gym + RL Tutorial.
 
 This repo contains notes for a tutorial on reinforcement learning. The tutorial is centered around Tensorflow and OpenAI Gym, two libraries for conducitng deep learning and the agent-environment loop, respectively, in Python. A general outline is as follows:
+
 1. Gym: `gym_demo`
+
 	a. Explain at a high level what reinforcement learning is and how the agent-environment loop works. Particularly, explain that there has been no standard library for describing this procedure for a long time.
+	
 	b. Introduce Gym as this standard wrapper, presenting various environments.
+	
 	c. Show some simple code (`gym_demo`) of taking random actions in the mountain car environment. 
+	
 2. Tensorflow Explaination:
+
 	a. Explain that to make an agent which acts well in an environment, we need to develop techniques for producing an optimal agent with respect to expected future reward. At this point feel free to introduce various soa approaches to reinforcement learning, and specifically, how important deep learning is in this context.
+	
 	b. Show motivating example of trying to do deep learning from scratch in Numpy (its hard, you have to manually do error backpropagation.) Then compare to the TF code, hopefully you can show the power of TF at this point.
+	
 	c. Explain different pieces of Tensorflow, variables, ops, sessions, etc.
 
 3. Behavioral Cloning + Tensorflow Demo `tf_demo` 
