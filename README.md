@@ -44,7 +44,7 @@ This repo contains notes for a tutorial on reinforcement learning. The tutorial 
 
 	a. Explain how we can use reinforcement learning to actually improve performance of existing BC agents or train agents from scratch.
 	
-	b. In `reinforce_demo` fill out the cofde in `demo.py` using that from `run.py` and then run `python3 run.py`. The script will then evaluate the policy gradient algorithm on CartPole for a number of episodes and after 300 episodes it will plot the progress of REINFORCE. Since REINFORCE is an unstable algorithm, expect that occasionally it will learn and then unlearn the policy.
+	b. In `reinforce_demo` fill out the code in `demo.py` using that from `run.py` and then run `python3 run.py`. The script will then evaluate the policy gradient algorithm on CartPole for a number of episodes and after 300 episodes it will plot the progress of REINFORCE. Since REINFORCE is an unstable algorithm, expect that occasionally it will learn and then unlearn the policy.
 	
 
 5. Actor Critic Demo. `actor_critic_demo`
